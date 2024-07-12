@@ -18,7 +18,5 @@
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
     "resolveJsonModule": true
-  },
-
-  "include": ["./src", "./tsconfig.json"]
+  }
 }
