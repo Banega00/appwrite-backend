@@ -9,5 +9,6 @@ import { HeleprsService } from './helpers/helpers.service';
     imports: [],
     controllers: [],
     providers: [ConfigService, HeleprsService],
+    exports: [ConfigService, HeleprsService],
 })
 export class SharedModule { }

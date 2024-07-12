@@ -13,6 +13,21 @@ export class ConfigService {
     constructor() {
     }
 
+    get appwriteConfig() {
+        return {
+            APPWRITE_ENDPOINT: process.env.APPWRITE_ENDPOINT || 'https://cloud.appwrite.io/v1',
+            APPWRITE_PROJECT_ID: process.env.APPWRITE_PROJECT_ID,
+            APPWRITE_API_KEY: process.env.APPWRITE_API_KEY,
+        };
+    }
+
+    get globalConfig() {
+        return {
+            host: process.env.APP_HOST || '0.0.0.0',
+            port: +process.env.APP_PORT || 3000,
+        };
+    }
+
     getPort(): number {
         return +process.env.PORT || 3000;
     }
