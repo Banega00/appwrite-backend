@@ -4,9 +4,13 @@ import { Request, Response } from 'express';
 import { SessionGuard } from '../shared/guards/session.guard';
 import { ApiCookieAuth, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { RegisterUserDto } from './dto/register-user.dto';
+import { CustomLoggingService } from 'src/shared/logger/logger.service';
 @Controller()
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(
+    private readonly authService: AuthService,
+    private readonly logger: CustomLoggingService,
+  ) {}
 
   @ApiOperation({ summary: 'Login user and creates an anonymous session', description: 'Login user and creates an anonymous session' })
   @ApiResponse({ status: 201, description: 'Successfully created anonymous session' })
@@ -19,6 +23,7 @@ export class AuthController {
       sameSite: 'none',
       expires: new Date(session.expire),
     });
+    this.logger.log('Successfully created anonymous session ✅');
     return { status: 201, message: 'Successfully created anonymous session' };
   }
 
@@ -33,6 +38,7 @@ export class AuthController {
   async register(@Req() request: Request, @Body() body: RegisterUserDto) {
     const user = request.user;
     const registeredUser = await this.authService.register(user.$id, body);
+    this.logger.log('Successfully registered user ✅');
     return { status: 201, message: 'Successfully registered user', user: { name: registeredUser.name, email: registeredUser.email } };
   }
 }

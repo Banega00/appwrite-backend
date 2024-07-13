@@ -3,6 +3,7 @@ import { Request } from 'express';
 import { AppwriteService } from 'src/integrations/appwrite/appwrite.service';
 import { ContextService } from '../context/context.service';
 import { Reflector } from '@nestjs/core';
+import { CustomLoggingService } from '../logger/logger.service';
 
 export const SessionGuard = (options?: { onlyRegisteredUser: boolean }) => {
   if (options?.onlyRegisteredUser) {
@@ -17,6 +18,7 @@ export class AppwriteSessionGuard {
     private reflector: Reflector,
     private appwriteService: AppwriteService,
     private contextService: ContextService,
+    private logger: CustomLoggingService,
   ) {}
 
   async canActivate(context: ExecutionContext) {
@@ -44,7 +46,7 @@ export class AppwriteSessionGuard {
       this.contextService.set('user', user);
       return true;
     } catch (error) {
-      console.log(error);
+      this.logger.error(error);
       if (error.message.startsWith('Unauthorized')) throw error;
       throw new Error('Unauthorized');
     }

@@ -4,6 +4,9 @@ import { ConfigService } from './shared/config/config.service';
 import * as cookieParser from 'cookie-parser';
 import { ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { ClsService } from 'nestjs-cls';
+import { RequestLoggingInterceptor } from './shared/interceptors/request-logging.interceptor';
+import { CustomLoggingService } from './shared/logger/logger.service';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -21,6 +24,10 @@ async function bootstrap() {
 
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
+
+  const logger = await app.resolve<CustomLoggingService>(CustomLoggingService);
+  const clsService = await app.resolve<ClsService>(ClsService);
+  app.useGlobalInterceptors(new RequestLoggingInterceptor(logger, clsService));
 
   await app.listen(port);
 }
