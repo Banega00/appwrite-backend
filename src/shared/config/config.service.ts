@@ -13,6 +13,12 @@ export class ConfigService {
     constructor() {
     }
 
+    get db() {
+        return {
+            databaseId: process.env.APPWRITE_DATABASE_ID,
+        };
+    }
+
     get appwriteConfig() {
         return {
             APPWRITE_ENDPOINT: process.env.APPWRITE_ENDPOINT || 'https://cloud.appwrite.io/v1',

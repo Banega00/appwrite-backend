@@ -1,7 +1,7 @@
 import { Models } from 'node-appwrite'
 import { Request } from 'express';
 
-type User = Models.User<any>;
+export type User = Models.User<any>;
 
 declare global {
 	namespace Express {
