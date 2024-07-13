@@ -18,5 +18,11 @@
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
     "resolveJsonModule": true
-  }
+  },
+  "include": [
+    "src/**/*",
+    "types/**/*",
+    "resources/**/*",
+    "test/**/*", "custom.d.ts",
+  ]
 }

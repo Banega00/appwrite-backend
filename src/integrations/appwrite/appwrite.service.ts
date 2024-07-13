@@ -1,14 +1,16 @@
 import { Injectable, OnModuleInit } from '@nestjs/common';
 import { Account, Client, Users } from 'node-appwrite';
 import { ConfigService } from 'src/shared/config/config.service';
+import { ContextService } from 'src/shared/context/context.service';
 
 @Injectable()
 export class AppwriteService implements OnModuleInit{
+  
     
-    private client: Client;
+    private adminClient: Client;
     private account: Account;
 
-    constructor(private readonly configService: ConfigService) {
+    constructor(private readonly configService: ConfigService, private readonly contextService: ContextService) {
         const appwriteConfig = this.configService.appwriteConfig;
         if(!appwriteConfig) {
             throw new Error('Appwrite configuration is missing');
@@ -20,14 +22,14 @@ export class AppwriteService implements OnModuleInit{
             throw new Error('Appwrite API key is missing');
         }
 
-        this.client = new Client();
-        this.account = new Account(this.client);
+        this.adminClient = new Client();
+        this.account = new Account(this.adminClient);
     }
 
     onModuleInit() {
         const { APPWRITE_ENDPOINT, APPWRITE_API_KEY, APPWRITE_PROJECT_ID } = this.configService.appwriteConfig;
 
-        this.client
+        this.adminClient = this.adminClient
             .setEndpoint(APPWRITE_ENDPOINT)
             .setProject(APPWRITE_PROJECT_ID)
             .setKey(APPWRITE_API_KEY)
@@ -35,19 +37,32 @@ export class AppwriteService implements OnModuleInit{
     }
 
     public async createAnonymousSession() {
-        const account = new Account(this.client);
-
-        const anonymousSession = await account.createAnonymousSession();
+        const account = new Account(this.adminClient);
         
-        return anonymousSession;
+        const anonymousSession = await account.createAnonymousSession();
+        return anonymousSession.secret;
     }
 
-    async createUser(userId: string, data: { email: string; password: string; name: string; }) {
-        const user = new Users(this.client);
-        await user.updateName(userId, data.name);
-        await user.updateEmail(userId, data.email);
-        await user.updatePassword(userId, data.password);
-        return user.get(userId);
+    async getUserFromSessionSecret(secret: string) {
+        const sessionClient = new Client()
+            .setEndpoint(this.configService.appwriteConfig.APPWRITE_ENDPOINT)
+            .setProject(this.configService.appwriteConfig.APPWRITE_PROJECT_ID);
+
+        sessionClient.setSession(secret);
+        const account = new Account(sessionClient);
+        const currentUser = await account.get();
+        return currentUser;
+    }
+
+    async updateUser(userId: string, data: { email: string; password: string; name: string; }) {
+        const user = new Users(this.adminClient);
+
+        const currentUser = await user.get(userId);
+
+        currentUser.name != data.name && await user.updateName(userId, data.name);
+        currentUser.email != data.email && await user.updateEmail(userId, data.email);
+        currentUser.password != data.password && await user.updatePassword(userId, data.password);
+        return await user.get(userId);
     }
     
 

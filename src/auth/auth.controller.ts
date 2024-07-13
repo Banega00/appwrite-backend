@@ -1,6 +1,7 @@
 import { Body, Controller, Post, Req, Res } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { Request, Response } from 'express';
+import { SessionGuard } from '../shared/guards/session.guard';
 @Controller()
 export class AuthController {
   constructor(private readonly authService: AuthService) {
@@ -9,15 +10,16 @@ export class AuthController {
 
   @Post('/login')
   async login(@Res({ passthrough: true }) response: Response) {
-    const anonymousSession = await this.authService.login();
-    response.cookie('auth_token', anonymousSession['userId'], {});
-    return anonymousSession;
+    const token = await this.authService.login();
+    response.cookie('auth_token', token, {});
+    return { status: 200, message: 'Successfully created anonymous session' };
   }
 
+  @SessionGuard()
   @Post('/register')
   async register(@Req() request: Request, @Body() data: {email: string, password: string, name: string}) {
-    const token = request.cookies['auth_token']; // Access the token from the cookie
+    const user = request.user;
 
-    return this.authService.register(token, data);
+    return this.authService.register(user.$id, data);
   }
 }
