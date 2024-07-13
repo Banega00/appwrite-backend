@@ -15,8 +15,12 @@ export class Reservation implements Models.Document{
         this.numberOfGuests = obj.numberOfGuests;
         this.specialRequests = obj.specialRequests;
         this.userId = obj.userId;
+
         this.datetime = new Date(`${this.date}T${this.time}:00`);
 
+        if(this.datetime < new Date()) {
+            throw new Error('Reservation date and time cannot be in the past');
+        }
     }
     
     $id: string;
