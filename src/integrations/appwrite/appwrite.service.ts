@@ -1,9 +1,10 @@
 import { Injectable, OnModuleInit } from '@nestjs/common';
-import { Account, Client } from 'appwrite';
+import { Account, Client, Users } from 'node-appwrite';
 import { ConfigService } from 'src/shared/config/config.service';
 
 @Injectable()
 export class AppwriteService implements OnModuleInit{
+    
     private client: Client;
     private account: Account;
 
@@ -20,22 +21,34 @@ export class AppwriteService implements OnModuleInit{
         }
 
         this.client = new Client();
-        this.client
-            .setEndpoint(appwriteConfig.APPWRITE_ENDPOINT)
-            .setProject(appwriteConfig.APPWRITE_PROJECT_ID)
         this.account = new Account(this.client);
     }
 
     onModuleInit() {
         const { APPWRITE_ENDPOINT, APPWRITE_API_KEY, APPWRITE_PROJECT_ID } = this.configService.appwriteConfig;
 
-        this.client = new Client();
         this.client
             .setEndpoint(APPWRITE_ENDPOINT)
             .setProject(APPWRITE_PROJECT_ID)
-        this.account = new Account(this.client);
+            .setKey(APPWRITE_API_KEY)
+
     }
 
+    public async createAnonymousSession() {
+        const account = new Account(this.client);
+
+        const anonymousSession = await account.createAnonymousSession();
+        
+        return anonymousSession;
+    }
+
+    async createUser(userId: string, data: { email: string; password: string; name: string; }) {
+        const user = new Users(this.client);
+        await user.updateName(userId, data.name);
+        await user.updateEmail(userId, data.email);
+        await user.updatePassword(userId, data.password);
+        return user.get(userId);
+    }
     
 
     // async createAccount(email: string, password: string, name: string): Promise<any> {
