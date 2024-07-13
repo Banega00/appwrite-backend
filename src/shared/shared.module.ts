@@ -8,9 +8,9 @@ import { ClsModule } from 'nestjs-cls';
 
 @Global()
 @Module({
-    imports: [ClsModule],
-    controllers: [],
-    providers: [ConfigService, HeleprsService, ContextService],
-    exports: [ConfigService, HeleprsService, ContextService],
+  imports: [ClsModule],
+  controllers: [],
+  providers: [ConfigService, HeleprsService, ContextService],
+  exports: [ConfigService, HeleprsService, ContextService],
 })
-export class SharedModule { }
+export class SharedModule {}

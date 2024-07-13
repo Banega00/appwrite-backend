@@ -12,15 +12,15 @@ async function bootstrap() {
   const port = configService.getPort();
   app.use(cookieParser());
   app.useGlobalPipes(new ValidationPipe());
-  
+
   app.enableCors({
     origin: '*',
   });
 
   const config = new DocumentBuilder().setTitle('Appwrite backend').setDescription('Appwrite backend description').setVersion('1.0').build();
 
-	const document = SwaggerModule.createDocument(app, config);
-	SwaggerModule.setup('api', app, document);
+  const document = SwaggerModule.createDocument(app, config);
+  SwaggerModule.setup('api', app, document);
 
   await app.listen(port);
 }
