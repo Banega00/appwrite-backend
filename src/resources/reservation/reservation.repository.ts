@@ -7,7 +7,7 @@ export class ReservationRepository {
   constructor(private readonly appwriteService: AppwriteService) {}
 
   async getAllUserReservations(userId: string) {
-    const reservations = await this.appwriteService.getAllUserResevations(userId);
+    const reservations = await this.appwriteService.getAllUserReservations(userId);
     return reservations;
   }
 

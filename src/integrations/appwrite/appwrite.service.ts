@@ -148,7 +148,7 @@ export class AppwriteService implements OnModuleInit {
     return response as T;
   }
 
-  async getAllUserResevations(userId: string) {
+  async getAllUserReservations(userId: string) {
     const reservations = await this.databases.listDocuments(this.databaseId, this.requiredCollectionsMap['reservations'].id, [
       Query.equal('userId', userId),
     ]);
