@@ -35,11 +35,11 @@ $ npm run start:dev
 $ npm run start:prod
 ```
 ## Open API specifications
-This project implements the OpenAPI Specification (OAS3) using Swagger, providing a standardized and interactive API documentation. The OpenAPI spec is available at `<server_url>/api`.
+This project implements the OpenAPI Specification (OAS3) using Swagger, providing a standardized and interactive API documentation. The OpenAPI spec is available at `http://<server_url>/api`.
 
 ## Postman request collection
 [![Icons](https://skillicons.dev/icons?i=postman)](https://skillicons.dev)
-For purpose of developing this application Postman client has been used. If you want to test all endpoints from Postman you can import my request collection to have a starting boilerplate. It is in form of JSON file located in root folder of this project named: `Appwrite_backend_collection.postman_collection.json`
+For purpose of developing this application I've used Postman client. If you want to test all endpoints from Postman you can import my request collection to have a starting boilerplate. It is in form of JSON file located in root folder of this project named: `Appwrite_backend_collection.postman_collection.json`
 
 ## NestJS documentation with Compodoc
 
@@ -47,48 +47,61 @@ NestJS documentation for this project is generated using compdoc documentation t
 
 In order to open this documentation just run `npx compodoc -s`. This command will start a local server, and you can access the documentation by navigating to http://localhost:8080 in your web browser.
 
-## Project components
+## Project structure & components
 
 NestJS follows modular architecture for designing different application components
 
 ### Main modules
-#### 1. Auth
+#### 1. Auth - `auth.module.ts`
+
 This module is designed to handle authentication related operations within this NestJS server. Its auth controller primarily supports two key functionalities:
     
 - **login** - creates an anonymous session and stores session details in JWT encoded string which is transported via auth_token cookie
 - **register** - upgrades an anonymous session to a registered session by adding real user data.
 
-#### 2. User
+#### 2. User - `user.module.ts`
 This module contains a controller for user related operations like fetching user's data
 
-#### 3. Reservation
+#### 3. Reservation - `reservation.module.ts`
 This module intended for managing reservations of a user. It has two main functionalities to create a new reservation and retrieve all reservations of a user.
 
-### Integrations
+### Integrations 
+- `appwrite.module.ts`
+
 Trough dedicated Appwrite module this NestJS server is connected with Appwrite service and utilizes its database and authentication features.
 
 ### Util components
 Most utility components are stored and imported trough shared module because they are required in different parts of the application
-#### 1. Config service
+#### 1. Config service - `config.service.ts`
 is designed to centralize and simplify access to application configuration settings, such as environment variables and predefined configurations for development, testing, and production environments. It provides methods to retrieve specific configuration values like database IDs, Appwrite API settings, and global configurations like the application's host and port.
 
-#### 2. Context service
+#### 2. Context service - `context.service.ts`
 is designed to facilitate the storage and retrieval of context-specific data (like session secrets, user information, and timestamps) across different parts of an application using the ClsService from nestjs-cls, ensuring that data remains isolated to each request or execution context.
 
-#### 3. Global Exception Filter
+#### 3. Global Exception Filter - `global-exception.filter.ts`
 is designed to catch and handle all unhandled exceptions across the entire application. It standardizes the response structure for errors, ensuring a consistent error response format for clients. Additionally, it can log errors for debugging and monitoring purposes, and it allows for the customization of error handling
 
-#### 4. Session guard
+#### 4. Session guard - `session.guard.ts`
 The SessionGuard, specifically the AppwriteSessionGuard class within the session.guard.ts file, is a custom guard in a NestJS application designed to manage session-based authentication and authorization. It extracts JWT encoded token from auth_token and fetches user based on session that corresponds to that token.
 
 #### 5. Request logging interceptor & middleware
+- `response-logging.interceptor.ts`
+- `response-logging.middleware.ts`
+
 This project uses an interceptor and middleware to log the start and end of HTTP requests, including the method, URL, and response status code, as well as the time taken to process the request, thereby aiding in monitoring and debugging the application's HTTP traffic. These services also have a purpose to attach unique request id in order to enhance logs traceability and help to isolated them on request level.
 
-#### 6. Logger service
+#### 6. Logger service - `logger.service.ts`
 is designed to provide a centralized and consistent logging mechanism for an application. It abstracts the complexity of logging by offering a simple interface to record various levels of information (e.g., debug, info, warning, error), enabling developers to track application behavior, diagnose issues, and monitor performance across different environments.
 
 ## Project architecture
 This project follows the standardized 3-Tier NestJS architecture approach.
-1. Controllers - This layer is responsible for handling incoming HTTP requests, processing user inputs, and returning the appropriate HTTP responses
+1. Controllers - This layer is responsible for handling incoming HTTP requests, processing user inputs, and returning the appropriate HTTP responses. This app has total of 4 controllers 
+    
+    - app controller
+    - auth controller
+    - user controller
+    - reservation controller
+
 2. Services - This layer contains the core business logic and rules of the application. 
+
 3. Repositories (Data access layer) - This layer is responsible for interacting with the database. Repositories provide an abstraction over data access, encapsulating the logic required to query and persist data. Specifically for this project repository layer uses appwrite service to implement data storing and retrieval.

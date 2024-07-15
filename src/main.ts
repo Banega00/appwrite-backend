@@ -7,7 +7,7 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ClsService } from 'nestjs-cls';
 import { RequestLoggingInterceptor } from './shared/interceptors/request-logging.interceptor';
 import { CustomLoggingService } from './shared/logger/logger.service';
-import { GlobalExceptionFilter } from './shared/exceptions/global-exception-filter';
+import { GlobalExceptionFilter } from './shared/exceptions/global-exception.filter';
 import { ContextService } from './shared/context/context.service';
 
 async function bootstrap() {
