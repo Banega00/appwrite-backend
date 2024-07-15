@@ -7,6 +7,8 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ClsService } from 'nestjs-cls';
 import { RequestLoggingInterceptor } from './shared/interceptors/request-logging.interceptor';
 import { CustomLoggingService } from './shared/logger/logger.service';
+import { GlobalExceptionFilter } from './shared/exceptions/global-exception-filter';
+import { ContextService } from './shared/context/context.service';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -26,9 +28,10 @@ async function bootstrap() {
   SwaggerModule.setup('api', app, document);
 
   const logger = await app.resolve<CustomLoggingService>(CustomLoggingService);
+  const contextService = await app.resolve<ContextService>(ContextService);
   const clsService = await app.resolve<ClsService>(ClsService);
   app.useGlobalInterceptors(new RequestLoggingInterceptor(logger, clsService));
-
+  app.useGlobalFilters(new GlobalExceptionFilter(logger, contextService, configService));
   await app.listen(port);
 }
 bootstrap();

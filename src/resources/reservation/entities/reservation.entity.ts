@@ -9,12 +9,13 @@ export class Reservation implements Models.Document {
   specialRequests?: string[];
   userId: User['$id'];
 
-  constructor(obj: { date: string; time: string; numberOfGuests: number; specialRequests?: string[]; userId: User['$id'] }) {
+  constructor(obj: { $id?: string; date: string; time: string; numberOfGuests: number; specialRequests?: string[]; userId: User['$id'] }) {
     this.date = obj.date;
     this.time = obj.time;
     this.numberOfGuests = obj.numberOfGuests;
     this.specialRequests = obj.specialRequests;
     this.userId = obj.userId;
+    this.$id = obj.$id;
 
     this.datetime = new Date(`${this.date}T${this.time}:00`);
 
@@ -29,4 +30,14 @@ export class Reservation implements Models.Document {
   $createdAt: string;
   $updatedAt: string;
   $permissions: string[];
+
+  toResponseDto() {
+    return {
+      id: this.$id,
+      date: this.date,
+      time: this.time,
+      numberOfGuests: this.numberOfGuests,
+      specialRequests: this.specialRequests,
+    };
+  }
 }

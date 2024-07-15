@@ -4,6 +4,7 @@ import { ClsService } from 'nestjs-cls';
 export const ContextKeys = {
   sessionSecret: 'sessionSecret',
   user: 'user',
+  startTimestamp: 'startTimestamp',
 } as const;
 
 @Injectable()

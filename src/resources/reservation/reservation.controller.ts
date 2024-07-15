@@ -5,6 +5,7 @@ import { Request } from 'express';
 import { SessionGuard } from 'src/shared/guards/session.guard';
 import { ApiOperation, ApiResponse, ApiCookieAuth } from '@nestjs/swagger';
 import { CustomLoggingService } from 'src/shared/logger/logger.service';
+import { Reservation } from './entities/reservation.entity';
 
 @Controller()
 export class ReservationController {
@@ -42,8 +43,9 @@ export class ReservationController {
   @ApiCookieAuth('auth_token')
   @SessionGuard({ onlyRegisteredUser: true })
   @Get('/reservations')
-  getAllUsersReservations(@Req() request: Request) {
+  async getAllUsersReservations(@Req() request: Request) {
     const userId = request.user.$id;
-    return this.reservationService.getAllUserReservations(userId);
+    const reservations = await this.reservationService.getAllUserReservations(userId);
+    return reservations.map((reservation) => new Reservation(reservation).toResponseDto());
   }
 }

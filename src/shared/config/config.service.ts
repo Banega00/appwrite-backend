@@ -11,6 +11,12 @@ interface envConfig {
 export class ConfigService {
   constructor() {}
 
+  get env() {
+    return {
+      isDevOrTest: process.env.NODE_ENV?.toLowerCase().startsWith('dev') || process.env.NODE_ENV?.toLowerCase().startsWith('test'),
+    };
+  }
+
   get db() {
     return {
       databaseId: process.env.APPWRITE_DATABASE_ID,

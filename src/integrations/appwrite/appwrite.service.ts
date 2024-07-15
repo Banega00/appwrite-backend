@@ -148,10 +148,10 @@ export class AppwriteService implements OnModuleInit {
     return response as T;
   }
 
-  async getAllUserReservations(userId: string) {
+  async getAllUserReservations(userId: string): Promise<Reservation[]> {
     const reservations = await this.databases.listDocuments(this.databaseId, this.requiredCollectionsMap['reservations'].id, [
       Query.equal('userId', userId),
     ]);
-    return reservations;
+    return reservations.documents as Reservation[];
   }
 }
