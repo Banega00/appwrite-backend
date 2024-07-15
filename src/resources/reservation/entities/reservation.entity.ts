@@ -1,4 +1,4 @@
-import { User } from 'src/types/custom';
+import { User } from '../../../../src/types/custom';
 import { Models } from 'node-appwrite';
 
 export class Reservation implements Models.Document {

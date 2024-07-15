@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Reservation } from './entities/reservation.entity';
-import { AppwriteService } from 'src/integrations/appwrite/appwrite.service';
+import { AppwriteService } from '../../../src/integrations/appwrite/appwrite.service';
 
 @Injectable()
 export class ReservationRepository {

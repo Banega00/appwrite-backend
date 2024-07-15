@@ -1,6 +1,6 @@
 import { Controller, Get, Req } from '@nestjs/common';
 import { UserService } from './user.service';
-import { SessionGuard } from 'src/shared/guards/session.guard';
+import { SessionGuard } from '../../../src/shared/guards/session.guard';
 import { ApiCookieAuth, ApiOperation, ApiResponse } from '@nestjs/swagger';
 
 @Controller('user')

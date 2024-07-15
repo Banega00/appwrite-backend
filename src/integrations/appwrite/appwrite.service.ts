@@ -1,9 +1,9 @@
 import { Injectable, OnModuleInit } from '@nestjs/common';
 import { Account, Client, Databases, ID, Models, Permission, Query, Role, Users } from 'node-appwrite';
-import { Reservation } from 'src/resources/reservation/entities/reservation.entity';
-import { ConfigService } from 'src/shared/config/config.service';
-import { ContextService } from 'src/shared/context/context.service';
-import { CustomLoggingService } from 'src/shared/logger/logger.service';
+import { Reservation } from '../../../src/resources/reservation/entities/reservation.entity';
+import { ConfigService } from '../../../src/shared/config/config.service';
+import { ContextService } from '../../../src/shared/context/context.service';
+import { CustomLoggingService } from '../../../src/shared/logger/logger.service';
 
 @Injectable()
 export class AppwriteService implements OnModuleInit {

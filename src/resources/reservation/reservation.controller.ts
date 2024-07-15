@@ -2,9 +2,9 @@ import { Controller, Get, Post, Body, Req } from '@nestjs/common';
 import { ReservationService } from './reservation.service';
 import { CreateReservationDto } from './dto/create-reservation.dto';
 import { Request } from 'express';
-import { SessionGuard } from 'src/shared/guards/session.guard';
+import { SessionGuard } from '../../../src/shared/guards/session.guard';
 import { ApiOperation, ApiResponse, ApiCookieAuth } from '@nestjs/swagger';
-import { CustomLoggingService } from 'src/shared/logger/logger.service';
+import { CustomLoggingService } from '../../../src/shared/logger/logger.service';
 import { Reservation } from './entities/reservation.entity';
 
 @Controller()
@@ -31,7 +31,7 @@ export class ReservationController {
     return {
       status: 201,
       message: 'Successfully created reservation',
-      reservation: { id: reservation.$id, time: reservation.time, date: reservation.date },
+      reservation: { id: reservation.$id, time: reservation.time, date: reservation.date, specialRequests: reservation.specialRequests },
     };
   }
 

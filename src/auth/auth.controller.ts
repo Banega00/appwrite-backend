@@ -4,7 +4,7 @@ import { Request, Response } from 'express';
 import { SessionGuard } from '../shared/guards/session.guard';
 import { ApiCookieAuth, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { RegisterUserDto } from './dto/register-user.dto';
-import { CustomLoggingService } from 'src/shared/logger/logger.service';
+import { CustomLoggingService } from '../../src/shared/logger/logger.service';
 @Controller()
 export class AuthController {
   constructor(

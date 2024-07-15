@@ -1,9 +1,10 @@
 import { applyDecorators, ExecutionContext, Injectable, SetMetadata, UseGuards } from '@nestjs/common';
 import { Request } from 'express';
-import { AppwriteService } from 'src/integrations/appwrite/appwrite.service';
+import { AppwriteService } from '../../../src/integrations/appwrite/appwrite.service';
 import { ContextService } from '../context/context.service';
 import { Reflector } from '@nestjs/core';
 import { CustomLoggingService } from '../logger/logger.service';
+import { CustomError, CustomErrorType } from '../exceptions/custom-error';
 
 export const SessionGuard = (options?: { onlyRegisteredUser: boolean }) => {
   if (options?.onlyRegisteredUser) {
@@ -23,21 +24,21 @@ export class AppwriteSessionGuard {
 
   async canActivate(context: ExecutionContext) {
     const request: Request = context.switchToHttp().getRequest();
-    const token = request.cookies['auth_token'];
+    const token = request.cookies?.['auth_token'];
     const onlyRegisteredUser = this.reflector.getAllAndOverride<boolean>('onlyRegisteredUser', [context.getHandler(), context.getClass()]);
 
     if (!token) {
-      throw new Error('Unauthorized');
+      throw new CustomError({ errorType: CustomErrorType.UNAUTHORIZED, message: 'Session cookie is missing' });
     }
 
     try {
       const user = await this.appwriteService.getUserFromSessionSecret(token);
       if (!user) {
-        throw new Error('Unauthorized');
+        throw new CustomError({ errorType: CustomErrorType.UNAUTHORIZED, message: 'User not found' });
       }
 
       if (onlyRegisteredUser && !user.email) {
-        throw new Error('Unauthorized - this action is only available for registered users');
+        throw new CustomError({ errorType: CustomErrorType.UNAUTHORIZED, message: 'You must be a registered user' });
       }
 
       request.user = user;
@@ -48,7 +49,7 @@ export class AppwriteSessionGuard {
     } catch (error) {
       this.logger.error(error);
       if (error.message.startsWith('Unauthorized')) throw error;
-      throw new Error('Unauthorized');
+      throw new CustomError({ errorType: CustomErrorType.UNAUTHORIZED, message: 'Unauthorized' });
     }
   }
 }

@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { AppwriteService } from 'src/integrations/appwrite/appwrite.service';
+import { AppwriteService } from '../../src/integrations/appwrite/appwrite.service';
 
 @Injectable()
 export class AuthService {

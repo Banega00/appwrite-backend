@@ -105,3 +105,12 @@ This project follows the standardized 3-Tier NestJS architecture approach.
 2. Services - This layer contains the core business logic and rules of the application. 
 
 3. Repositories (Data access layer) - This layer is responsible for interacting with the database. Repositories provide an abstraction over data access, encapsulating the logic required to query and persist data. Specifically for this project repository layer uses appwrite service to implement data storing and retrieval.
+
+## E2E Tests
+I've also automated testing process by implementing End-to-End tests using Jest and Supertest libraries for Node.js applications. 
+Test suite has 13 test cases that covers different scenarios with both valid and invalid requests.
+All test cases are located in `/test/app.e2e-spec.ts` file.
+
+Run tests using the following command:
+
+`npm run test:e2e`
