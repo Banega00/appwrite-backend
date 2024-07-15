@@ -157,12 +157,12 @@
             <tbody>
                 <tr>
                     <td class="col-md-4">
-<code>constructor(reflector: Reflector, appwriteService: <a href="../injectables/AppwriteService.html" target="_self">AppwriteService</a>, contextService: <a href="../injectables/ContextService.html" target="_self">ContextService</a>)</code>
+<code>constructor(reflector: Reflector, appwriteService: <a href="../injectables/AppwriteService.html" target="_self">AppwriteService</a>, contextService: <a href="../injectables/ContextService.html" target="_self">ContextService</a>, logger: <a href="../injectables/CustomLoggingService.html" target="_self">CustomLoggingService</a>)</code>
                     </td>
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="20" class="link-to-prism">src/shared/guards/session.guard.ts:20</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="16" class="link-to-prism">src/shared/guards/session.guard.ts:16</a></div>
                             </td>
                         </tr>
 
@@ -215,6 +215,18 @@
                                                     </td>
                                                     
                                                 </tr>
+                                                <tr>
+                                                        <td>logger</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/CustomLoggingService.html" target="_self" >CustomLoggingService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
                                         </tbody>
                                     </table>
                             </div>
@@ -251,8 +263,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="25"
-                                    class="link-to-prism">src/shared/guards/session.guard.ts:25</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="24"
+                                    class="link-to-prism">src/shared/guards/session.guard.ts:24</a></div>
                         </td>
                     </tr>
 
@@ -304,61 +316,61 @@
 
 
     <div class="tab-pane fade  tab-source-code" id="source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { applyDecorators, ExecutionContext, Injectable, SetMetadata, UseGuards } from &quot;@nestjs/common&quot;;
-import { Request } from &quot;express&quot;;
-import { AppwriteService } from &quot;src/integrations/appwrite/appwrite.service&quot;;
-import { ContextService } from &quot;../context/context.service&quot;;
-import { Reflector } from &quot;@nestjs/core&quot;;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { applyDecorators, ExecutionContext, Injectable, SetMetadata, UseGuards } from &#x27;@nestjs/common&#x27;;
+import { Request } from &#x27;express&#x27;;
+import { AppwriteService } from &#x27;src/integrations/appwrite/appwrite.service&#x27;;
+import { ContextService } from &#x27;../context/context.service&#x27;;
+import { Reflector } from &#x27;@nestjs/core&#x27;;
+import { CustomLoggingService } from &#x27;../logger/logger.service&#x27;;
 
-export const SessionGuard &#x3D; (options?:{ onlyRegisteredUser: boolean}) &#x3D;&gt; {
-    if(options?.onlyRegisteredUser){
-        return applyDecorators(
-            SetMetadata(&#x27;onlyRegisteredUser&#x27;, true),
-            UseGuards(AppwriteSessionGuard)
-        )
-    }
-    return applyDecorators(
-        UseGuards(AppwriteSessionGuard)
-    )
-}
+export const SessionGuard &#x3D; (options?: { onlyRegisteredUser: boolean }) &#x3D;&gt; {
+  if (options?.onlyRegisteredUser) {
+    return applyDecorators(SetMetadata(&#x27;onlyRegisteredUser&#x27;, true), UseGuards(AppwriteSessionGuard));
+  }
+  return applyDecorators(UseGuards(AppwriteSessionGuard));
+};
 
 @Injectable()
 export class AppwriteSessionGuard {
-    constructor(private reflector: Reflector, private appwriteService: AppwriteService, private contextService: ContextService) {
-        
+  constructor(
+    private reflector: Reflector,
+    private appwriteService: AppwriteService,
+    private contextService: ContextService,
+    private logger: CustomLoggingService,
+  ) {}
+
+  async canActivate(context: ExecutionContext) {
+    const request: Request &#x3D; context.switchToHttp().getRequest();
+    const token &#x3D; request.cookies[&#x27;auth_token&#x27;];
+    const onlyRegisteredUser &#x3D; this.reflector.getAllAndOverride&lt;boolean&gt;(&#x27;onlyRegisteredUser&#x27;, [context.getHandler(), context.getClass()]);
+
+    if (!token) {
+      throw new Error(&#x27;Unauthorized&#x27;);
     }
 
-    async canActivate(context: ExecutionContext) {
-        const request: Request &#x3D; context.switchToHttp().getRequest();
-        const token &#x3D; request.cookies[&#x27;auth_token&#x27;];
-		const onlyRegisteredUser &#x3D; this.reflector.getAllAndOverride&lt;boolean&gt;(&#x27;onlyRegisteredUser&#x27;, [context.getHandler(), context.getClass()]);
+    try {
+      const user &#x3D; await this.appwriteService.getUserFromSessionSecret(token);
+      if (!user) {
+        throw new Error(&#x27;Unauthorized&#x27;);
+      }
 
-        if(!token) {
-            throw new Error(&#x27;Unauthorized&#x27;);
-        }
+      if (onlyRegisteredUser &amp;&amp; !user.email) {
+        throw new Error(&#x27;Unauthorized - this action is only available for registered users&#x27;);
+      }
 
-        try{
-            const user &#x3D; await this.appwriteService.getUserFromSessionSecret(token);
-            if(!user) {
-                throw new Error(&#x27;Unauthorized&#x27;);
-            }
+      request.user &#x3D; user;
 
-            if(onlyRegisteredUser &amp;&amp; !user.email) {
-                throw new Error(&#x27;Unauthorized - this action is only available for registered users&#x27;);
-            }
-
-            request.user &#x3D; user;
-
-            this.contextService.set(&#x27;sessionSecret&#x27;, token);
-            this.contextService.set(&#x27;user&#x27;, user);
-            return true;
-        }catch(error){
-            console.log(error);
-            if(error.message.startsWith(&#x27;Unauthorized&#x27;)) throw error;
-            throw new Error(&#x27;Unauthorized&#x27;);
-        }
+      this.contextService.set(&#x27;sessionSecret&#x27;, token);
+      this.contextService.set(&#x27;user&#x27;, user);
+      return true;
+    } catch (error) {
+      this.logger.error(error);
+      if (error.message.startsWith(&#x27;Unauthorized&#x27;)) throw error;
+      throw new Error(&#x27;Unauthorized&#x27;);
     }
-}</code></pre>
+  }
+}
+</code></pre>
     </div>
 
 </div>

@@ -24,55 +24,55 @@
 <title>cluster_AuthModule</title>
 <polygon fill="none" stroke="black" stroke-dasharray="1,5" points="8,-70 8,-195 514,-195 514,-70 8,-70"/>
 </g>
-<g id="clust3" class="cluster">
-<title>cluster_AuthModule_imports</title>
-<polygon fill="none" stroke="black" points="378,-78 378,-130 506,-130 506,-78 378,-78"/>
-</g>
 <g id="clust6" class="cluster">
 <title>cluster_AuthModule_providers</title>
-<polygon fill="none" stroke="black" points="16,-78 16,-130 370,-130 370,-78 16,-78"/>
+<polygon fill="none" stroke="black" points="152,-78 152,-130 506,-130 506,-78 152,-78"/>
+</g>
+<g id="clust3" class="cluster">
+<title>cluster_AuthModule_imports</title>
+<polygon fill="none" stroke="black" points="16,-78 16,-130 144,-130 144,-78 16,-78"/>
 </g>
 <!-- AppwriteModule -->
 <g id="node1" class="node">
 <title>AppwriteModule</title>
-<polygon fill="#8dd3c7" stroke="black" points="498.42,-122 495.42,-126 474.42,-126 471.42,-122 385.58,-122 385.58,-86 498.42,-86 498.42,-122"/>
-<text text-anchor="middle" x="442" y="-99.8" font-family="Times,serif" font-size="14.00">AppwriteModule</text>
+<polygon fill="#8dd3c7" stroke="black" points="136.42,-122 133.42,-126 112.42,-126 109.42,-122 23.58,-122 23.58,-86 136.42,-86 136.42,-122"/>
+<text text-anchor="middle" x="80" y="-99.8" font-family="Times,serif" font-size="14.00">AppwriteModule</text>
 </g>
 <!-- AuthModule -->
 <g id="node2" class="node">
 <title>AuthModule</title>
-<polygon fill="#8dd3c7" stroke="black" points="304.55,-187 301.55,-191 280.55,-191 277.55,-187 217.45,-187 217.45,-151 304.55,-151 304.55,-187"/>
-<text text-anchor="middle" x="261" y="-164.8" font-family="Times,serif" font-size="14.00">AuthModule</text>
+<polygon fill="#8dd3c7" stroke="black" points="262.55,-187 259.55,-191 238.55,-191 235.55,-187 175.45,-187 175.45,-151 262.55,-151 262.55,-187"/>
+<text text-anchor="middle" x="219" y="-164.8" font-family="Times,serif" font-size="14.00">AuthModule</text>
 </g>
 <!-- AppwriteModule&#45;&gt;AuthModule -->
 <g id="edge1" class="edge">
 <title>AppwriteModule&#45;&gt;AuthModule</title>
-<path fill="none" stroke="black" d="M442,-122.11C442,-141.34 442,-169 442,-169 442,-169 314.82,-169 314.82,-169"/>
-<polygon fill="black" stroke="black" points="314.82,-165.5 304.82,-169 314.82,-172.5 314.82,-165.5"/>
+<path fill="none" stroke="black" d="M80,-122.11C80,-141.34 80,-169 80,-169 80,-169 165.4,-169 165.4,-169"/>
+<polygon fill="black" stroke="black" points="165.4,-172.5 175.4,-169 165.4,-165.5 165.4,-172.5"/>
 </g>
 <!-- AppwriteSessionGuard -->
 <g id="node3" class="node">
 <title>AppwriteSessionGuard</title>
-<ellipse fill="#fdb462" stroke="black" cx="261" cy="-104" rx="101.28" ry="18"/>
-<text text-anchor="middle" x="261" y="-99.8" font-family="Times,serif" font-size="14.00">AppwriteSessionGuard</text>
+<ellipse fill="#fdb462" stroke="black" cx="397" cy="-104" rx="101.28" ry="18"/>
+<text text-anchor="middle" x="397" y="-99.8" font-family="Times,serif" font-size="14.00">AppwriteSessionGuard</text>
 </g>
 <!-- AppwriteSessionGuard&#45;&gt;AuthModule -->
 <g id="edge2" class="edge">
 <title>AppwriteSessionGuard&#45;&gt;AuthModule</title>
-<path fill="none" stroke="black" d="M261,-122.11C261,-122.11 261,-140.99 261,-140.99"/>
-<polygon fill="black" stroke="black" points="257.5,-140.99 261,-150.99 264.5,-140.99 257.5,-140.99"/>
+<path fill="none" stroke="black" d="M397,-122.11C397,-141.34 397,-169 397,-169 397,-169 273,-169 273,-169"/>
+<polygon fill="black" stroke="black" points="273,-165.5 263,-169 273,-172.5 273,-165.5"/>
 </g>
 <!-- AuthService -->
 <g id="node4" class="node">
 <title>AuthService</title>
-<ellipse fill="#fdb462" stroke="black" cx="83" cy="-104" rx="59.11" ry="18"/>
-<text text-anchor="middle" x="83" y="-99.8" font-family="Times,serif" font-size="14.00">AuthService</text>
+<ellipse fill="#fdb462" stroke="black" cx="219" cy="-104" rx="59.11" ry="18"/>
+<text text-anchor="middle" x="219" y="-99.8" font-family="Times,serif" font-size="14.00">AuthService</text>
 </g>
 <!-- AuthService&#45;&gt;AuthModule -->
 <g id="edge3" class="edge">
 <title>AuthService&#45;&gt;AuthModule</title>
-<path fill="none" stroke="black" d="M83,-122.11C83,-141.34 83,-169 83,-169 83,-169 207,-169 207,-169"/>
-<polygon fill="black" stroke="black" points="207,-172.5 217,-169 207,-165.5 207,-172.5"/>
+<path fill="none" stroke="black" d="M219,-122.11C219,-122.11 219,-140.99 219,-140.99"/>
+<polygon fill="black" stroke="black" points="215.5,-140.99 219,-150.99 222.5,-140.99 215.5,-140.99"/>
 </g>
 </g>
 </svg>

@@ -3,6 +3,7 @@ import { Account, Client, Databases, ID, Models, Permission, Query, Role, Users 
 import { Reservation } from 'src/resources/reservation/entities/reservation.entity';
 import { ConfigService } from 'src/shared/config/config.service';
 import { ContextService } from 'src/shared/context/context.service';
+import { CustomLoggingService } from 'src/shared/logger/logger.service';
 
 @Injectable()
 export class AppwriteService implements OnModuleInit {
@@ -20,6 +21,7 @@ export class AppwriteService implements OnModuleInit {
   constructor(
     private readonly configService: ConfigService,
     private readonly contextService: ContextService,
+    private readonly logger: CustomLoggingService,
   ) {
     const appwriteConfig = this.configService.appwriteConfig;
     if (!appwriteConfig) {
@@ -45,8 +47,8 @@ export class AppwriteService implements OnModuleInit {
     this.databases = new Databases(this.adminClient);
     this.databaseId = this.configService.db.databaseId;
     if (!this.databaseId) {
-      console.log('DatabaseId missing');
-      console.log('Creating database');
+      this.logger.log('DatabaseId missing');
+      this.logger.log('Creating database');
       await this.createDatabase();
     }
 
@@ -57,7 +59,7 @@ export class AppwriteService implements OnModuleInit {
       const collection = collections.collections.find((c) => c.name === collectionName);
       if (!collection) {
         await this.createCollection(collectionName);
-        console.log(`Collection ${collectionName} created`);
+        this.logger.log(`Collection ${collectionName} created`);
       } else {
         this.requiredCollectionsMap[collectionName].id = collections.collections.find((c) => c.name === collectionName).$id;
       }
@@ -67,7 +69,7 @@ export class AppwriteService implements OnModuleInit {
   async createDatabase() {
     const response = await this.databases.create(ID.unique(), 'Default');
     this.databaseId = response.$id;
-    console.log('Database created with ID: ', this.databaseId);
+    this.logger.log('Database created with ID: ' + this.databaseId);
   }
 
   async createCollection(collectionName: string) {

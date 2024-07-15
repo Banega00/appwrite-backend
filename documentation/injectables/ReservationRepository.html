@@ -231,8 +231,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="17"
-                                    class="link-to-prism">src/resources/reservation/reservation.repository.ts:17</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="14"
+                                    class="link-to-prism">src/resources/reservation/reservation.repository.ts:14</a></div>
                         </td>
                     </tr>
 
@@ -300,8 +300,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="12"
-                                    class="link-to-prism">src/resources/reservation/reservation.repository.ts:12</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="9"
+                                    class="link-to-prism">src/resources/reservation/reservation.repository.ts:9</a></div>
                         </td>
                     </tr>
 
@@ -353,27 +353,25 @@
 
 
     <div class="tab-pane fade  tab-source-code" id="source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Injectable } from &quot;@nestjs/common&quot;;
-import { Reservation } from &quot;./entities/reservation.entity&quot;;
-import { AppwriteService } from &quot;src/integrations/appwrite/appwrite.service&quot;;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Injectable } from &#x27;@nestjs/common&#x27;;
+import { Reservation } from &#x27;./entities/reservation.entity&#x27;;
+import { AppwriteService } from &#x27;src/integrations/appwrite/appwrite.service&#x27;;
 
 @Injectable()
-export class ReservationRepository{
+export class ReservationRepository {
+  constructor(private readonly appwriteService: AppwriteService) {}
 
-    constructor(private readonly appwriteService: AppwriteService){
+  async getAllUserReservations(userId: string) {
+    const reservations &#x3D; await this.appwriteService.getAllUserReservations(userId);
+    return reservations;
+  }
 
-    }
-
-    async getAllUserReservations(userId: string){
-        const reservations &#x3D; await this.appwriteService.getAllUserResevations(userId);
-        return reservations
-    }
-
-    async create(reservation: Reservation) {
-        const savedReservation &#x3D; await this.appwriteService.saveDocument(&#x27;reservations&#x27;, reservation);
-        return savedReservation;
-    }
-}</code></pre>
+  async create(reservation: Reservation) {
+    const savedReservation &#x3D; await this.appwriteService.saveDocument(&#x27;reservations&#x27;, reservation);
+    return savedReservation;
+  }
+}
+</code></pre>
     </div>
 
 </div>

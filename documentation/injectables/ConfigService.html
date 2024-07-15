@@ -158,6 +158,9 @@
                         <td class="col-md-4">
                             <ul class="index-list">
                                 <li>
+                                    <a href="#env" >env</a>
+                                </li>
+                                <li>
                                     <a href="#db" >db</a>
                                 </li>
                                 <li>
@@ -217,8 +220,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="41"
-                                    class="link-to-prism">src/shared/config/config.service.ts:41</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="45"
+                                    class="link-to-prism">src/shared/config/config.service.ts:45</a></div>
                         </td>
                     </tr>
 
@@ -280,8 +283,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="37"
-                                    class="link-to-prism">src/shared/config/config.service.ts:37</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="41"
+                                    class="link-to-prism">src/shared/config/config.service.ts:41</a></div>
                         </td>
                     </tr>
 
@@ -307,6 +310,28 @@
             <tbody>
                 <tr>
                     <td class="col-md-4">
+                        <a name="env"></a>
+                        <span class="name"><b>env</b><a href="#env"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>env()</code></span>
+                    </td>
+                </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="14" class="link-to-prism">src/shared/config/config.service.ts:14</a></div>
+                                </td>
+                            </tr>
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
                         <a name="db"></a>
                         <span class="name"><b>db</b><a href="#db"><span class="icon ion-ios-link"></span></a></span>
                     </td>
@@ -319,7 +344,7 @@
                 </tr>
                             <tr>
                                 <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="16" class="link-to-prism">src/shared/config/config.service.ts:16</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="20" class="link-to-prism">src/shared/config/config.service.ts:20</a></div>
                                 </td>
                             </tr>
 
@@ -341,7 +366,7 @@
                 </tr>
                             <tr>
                                 <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="22" class="link-to-prism">src/shared/config/config.service.ts:22</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="26" class="link-to-prism">src/shared/config/config.service.ts:26</a></div>
                                 </td>
                             </tr>
 
@@ -363,7 +388,7 @@
                 </tr>
                             <tr>
                                 <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="30" class="link-to-prism">src/shared/config/config.service.ts:30</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="34" class="link-to-prism">src/shared/config/config.service.ts:34</a></div>
                                 </td>
                             </tr>
 
@@ -374,50 +399,55 @@
 
 
     <div class="tab-pane fade  tab-source-code" id="source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Injectable } from &quot;@nestjs/common&quot;;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Injectable } from &#x27;@nestjs/common&#x27;;
 
 interface envConfig {
-    PORT: string,
-    APPWRITE_API_KEY: string,
-    APPWRITE_ENDPOINT: string,
-    APPWRITE_PROJECT_ID: string,
+  PORT: string;
+  APPWRITE_API_KEY: string;
+  APPWRITE_ENDPOINT: string;
+  APPWRITE_PROJECT_ID: string;
 }
 
 @Injectable()
 export class ConfigService {
+  constructor() {}
 
-    constructor() {
-    }
+  get env() {
+    return {
+      isDevOrTest: process.env.NODE_ENV?.toLowerCase().startsWith(&#x27;dev&#x27;) || process.env.NODE_ENV?.toLowerCase().startsWith(&#x27;test&#x27;),
+    };
+  }
 
-    get db() {
-        return {
-            databaseId: process.env.APPWRITE_DATABASE_ID,
-        };
-    }
+  get db() {
+    return {
+      databaseId: process.env.APPWRITE_DATABASE_ID,
+    };
+  }
 
-    get appwriteConfig() {
-        return {
-            APPWRITE_ENDPOINT: process.env.APPWRITE_ENDPOINT || &#x27;https://cloud.appwrite.io/v1&#x27;,
-            APPWRITE_PROJECT_ID: process.env.APPWRITE_PROJECT_ID,
-            APPWRITE_API_KEY: process.env.APPWRITE_API_KEY,
-        };
-    }
+  get appwriteConfig() {
+    return {
+      APPWRITE_ENDPOINT: process.env.APPWRITE_ENDPOINT || &#x27;https://cloud.appwrite.io/v1&#x27;,
+      APPWRITE_PROJECT_ID: process.env.APPWRITE_PROJECT_ID,
+      APPWRITE_API_KEY: process.env.APPWRITE_API_KEY,
+    };
+  }
 
-    get globalConfig() {
-        return {
-            host: process.env.APP_HOST || &#x27;0.0.0.0&#x27;,
-            port: +process.env.APP_PORT || 3000,
-        };
-    }
+  get globalConfig() {
+    return {
+      host: process.env.APP_HOST || &#x27;0.0.0.0&#x27;,
+      port: +process.env.APP_PORT || 3000,
+    };
+  }
 
-    getPort(): number {
-        return +process.env.PORT || 3000;
-    }
-    
-    get(key: keyof envConfig): string {
-        return process.env[key];
-    }
-}</code></pre>
+  getPort(): number {
+    return +process.env.PORT || 3000;
+  }
+
+  get(key: keyof envConfig): string {
+    return process.env[key];
+  }
+}
+</code></pre>
     </div>
 
 </div>

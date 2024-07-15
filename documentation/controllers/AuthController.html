@@ -204,8 +204,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="17"
-                                    class="link-to-prism">src/auth/auth.controller.ts:17</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="19"
+                                    class="link-to-prism">src/auth/auth.controller.ts:19</a></div>
                         </td>
                     </tr>
 
@@ -288,8 +288,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="35"
-                                    class="link-to-prism">src/auth/auth.controller.ts:35</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="38"
+                                    class="link-to-prism">src/auth/auth.controller.ts:38</a></div>
                         </td>
                     </tr>
 
@@ -357,38 +357,42 @@ import { Request, Response } from &#x27;express&#x27;;
 import { SessionGuard } from &#x27;../shared/guards/session.guard&#x27;;
 import { ApiCookieAuth, ApiOperation, ApiResponse } from &#x27;@nestjs/swagger&#x27;;
 import { RegisterUserDto } from &#x27;./dto/register-user.dto&#x27;;
+import { CustomLoggingService } from &#x27;src/shared/logger/logger.service&#x27;;
 @Controller()
 export class AuthController {
-  constructor(private readonly authService: AuthService) {
-
-  }
+  constructor(
+    private readonly authService: AuthService,
+    private readonly logger: CustomLoggingService,
+  ) {}
 
   @ApiOperation({ summary: &#x27;Login user and creates an anonymous session&#x27;, description: &#x27;Login user and creates an anonymous session&#x27; })
-	@ApiResponse({ status: 201, description: &#x27;Successfully created anonymous session&#x27;})
-	@ApiResponse({ status: 500, description: &#x27;Internal server error&#x27;})
+  @ApiResponse({ status: 201, description: &#x27;Successfully created anonymous session&#x27; })
+  @ApiResponse({ status: 500, description: &#x27;Internal server error&#x27; })
   @Post(&#x27;/login&#x27;)
   async login(@Res({ passthrough: true }) response: Response) {
     const session &#x3D; await this.authService.login();
     response.cookie(&#x27;auth_token&#x27;, session.secret, {
       httpOnly: true,
       sameSite: &#x27;none&#x27;,
-      expires: new Date(session.expire)
+      expires: new Date(session.expire),
     });
+    this.logger.log(&#x27;Successfully created anonymous session ✅&#x27;);
     return { status: 201, message: &#x27;Successfully created anonymous session&#x27; };
   }
 
   @ApiOperation({ summary: &#x27;Register user&#x27;, description: &#x27;Upgrades anonymous session with real user data&#x27; })
-	@ApiResponse({ status: 201, description: &#x27;Successfully created anonymous session&#x27;})
-  @ApiResponse({ status: 400, description: &#x27;Invalid payload&#x27;})
-  @ApiResponse({ status: 401, description: &#x27;Unauthorized&#x27;})
-	@ApiResponse({ status: 500, description: &#x27;Internal server error&#x27;})
+  @ApiResponse({ status: 201, description: &#x27;Successfully created anonymous session&#x27; })
+  @ApiResponse({ status: 400, description: &#x27;Invalid payload&#x27; })
+  @ApiResponse({ status: 401, description: &#x27;Unauthorized&#x27; })
+  @ApiResponse({ status: 500, description: &#x27;Internal server error&#x27; })
   @ApiCookieAuth(&#x27;auth_token&#x27;)
   @SessionGuard()
   @Post(&#x27;/register&#x27;)
   async register(@Req() request: Request, @Body() body: RegisterUserDto) {
     const user &#x3D; request.user;
     const registeredUser &#x3D; await this.authService.register(user.$id, body);
-    return { status: 201, message: &#x27;Successfully registered user&#x27;, user: { name: registeredUser.name, email: registeredUser.email} };
+    this.logger.log(&#x27;Successfully registered user ✅&#x27;);
+    return { status: 201, message: &#x27;Successfully registered user&#x27;, user: { name: registeredUser.name, email: registeredUser.email } };
   }
 }
 </code></pre>

@@ -155,6 +155,7 @@
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
+                                    <span class="modifier">Async</span>
                                 <a href="#getAllUsersReservations" >getAllUsersReservations</a>
                             </li>
                         </ul>
@@ -211,8 +212,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="20"
-                                    class="link-to-prism">src/resources/reservation/reservation.controller.ts:20</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="25"
+                                    class="link-to-prism">src/resources/reservation/reservation.controller.ts:25</a></div>
                         </td>
                     </tr>
 
@@ -284,6 +285,7 @@
                             <span class="modifier"></span>
                             <span class="modifier"></span>
                             <span class="modifier"></span>
+                            <span class="modifier">Async</span>
                         <span ><b>getAllUsersReservations</b></span>
                         <a href="#getAllUsersReservations"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -306,8 +308,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="34"
-                                    class="link-to-prism">src/resources/reservation/reservation.controller.ts:34</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="46"
+                                    class="link-to-prism">src/resources/reservation/reservation.controller.ts:46</a></div>
                         </td>
                     </tr>
 
@@ -343,7 +345,7 @@
                                 </table>
                             </div>
                         <div class="io-description">
-                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                            <b>Returns : </b>    <code>unknown</code>
 
                         </div>
                             <div class="io-description">
@@ -357,42 +359,55 @@
 
 
     <div class="tab-pane fade  tab-source-code" id="source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Controller, Get, Post, Body, Patch, Param, Delete, Req, Session } from &#x27;@nestjs/common&#x27;;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Controller, Get, Post, Body, Req } from &#x27;@nestjs/common&#x27;;
 import { ReservationService } from &#x27;./reservation.service&#x27;;
 import { CreateReservationDto } from &#x27;./dto/create-reservation.dto&#x27;;
 import { Request } from &#x27;express&#x27;;
 import { SessionGuard } from &#x27;src/shared/guards/session.guard&#x27;;
 import { ApiOperation, ApiResponse, ApiCookieAuth } from &#x27;@nestjs/swagger&#x27;;
+import { CustomLoggingService } from &#x27;src/shared/logger/logger.service&#x27;;
+import { Reservation } from &#x27;./entities/reservation.entity&#x27;;
 
 @Controller()
 export class ReservationController {
-  constructor(private readonly reservationService: ReservationService) {}
+  constructor(
+    private readonly reservationService: ReservationService,
+    private readonly logger: CustomLoggingService,
+  ) {}
 
   @ApiOperation({ summary: &#x27;Create a reservation&#x27;, description: &#x27;Create a reservation on behalf current user session&#x27; })
-	@ApiResponse({ status: 201, description: &#x27;Successfully created reservation&#x27;})
-  @ApiResponse({ status: 400, description: &#x27;Invalid payload&#x27;})
-  @ApiResponse({ status: 401, description: &#x27;Unauthorized&#x27;})
-	@ApiResponse({ status: 500, description: &#x27;Internal server error&#x27;})
+  @ApiResponse({ status: 201, description: &#x27;Successfully created reservation&#x27; })
+  @ApiResponse({ status: 400, description: &#x27;Invalid payload&#x27; })
+  @ApiResponse({ status: 401, description: &#x27;Unauthorized&#x27; })
+  @ApiResponse({ status: 500, description: &#x27;Internal server error&#x27; })
   @ApiCookieAuth(&#x27;auth_token&#x27;)
-  @SessionGuard({onlyRegisteredUser: true})
+  @SessionGuard({ onlyRegisteredUser: true })
   @Post(&#x27;/reservation&#x27;)
   async create(@Req() request: Request, @Body() createReservationDto: CreateReservationDto) {
     const userId &#x3D; request.user.$id;
     const reservation &#x3D; await this.reservationService.create(userId, createReservationDto);
-    return { status: 201, message: &#x27;Successfully created reservation&#x27;, reservation: { id: reservation.$id, time: reservation.time, date: reservation.date } };
+
+    this.logger.log(&#x27;Successfully created reservation ✅&#x27;);
+
+    return {
+      status: 201,
+      message: &#x27;Successfully created reservation&#x27;,
+      reservation: { id: reservation.$id, time: reservation.time, date: reservation.date },
+    };
   }
 
   @ApiOperation({ summary: &#x27;Get all reservations of a user&#x27;, description: &#x27;Get all reservations of a user from its session&#x27; })
-	@ApiResponse({ status: 200, description: &#x27;Users reservations&#x27;})
-  @ApiResponse({ status: 400, description: &#x27;Invalid payload&#x27;})
-  @ApiResponse({ status: 401, description: &#x27;Unauthorized&#x27;})
-	@ApiResponse({ status: 500, description: &#x27;Internal server error&#x27;})
+  @ApiResponse({ status: 200, description: &#x27;Users reservations&#x27; })
+  @ApiResponse({ status: 400, description: &#x27;Invalid payload&#x27; })
+  @ApiResponse({ status: 401, description: &#x27;Unauthorized&#x27; })
+  @ApiResponse({ status: 500, description: &#x27;Internal server error&#x27; })
   @ApiCookieAuth(&#x27;auth_token&#x27;)
-  @SessionGuard({onlyRegisteredUser: true})
+  @SessionGuard({ onlyRegisteredUser: true })
   @Get(&#x27;/reservations&#x27;)
-  getAllUsersReservations(@Req() request: Request) {
+  async getAllUsersReservations(@Req() request: Request) {
     const userId &#x3D; request.user.$id;
-    return this.reservationService.getAllUserReservations(userId);
+    const reservations &#x3D; await this.reservationService.getAllUserReservations(userId);
+    return reservations.map((reservation) &#x3D;&gt; new Reservation(reservation).toResponseDto());
   }
 }
 </code></pre>

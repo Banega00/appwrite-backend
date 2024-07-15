@@ -296,22 +296,23 @@
 
 
     <div class="tab-pane fade  tab-source-code" id="source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { ApiProperty } from &quot;@nestjs/swagger&quot;;
-import { IsEmail, IsString } from &quot;class-validator&quot;;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { ApiProperty } from &#x27;@nestjs/swagger&#x27;;
+import { IsEmail, IsString } from &#x27;class-validator&#x27;;
 
 export class RegisterUserDto {
-    @ApiProperty({example: &#x27;test@gmail.com&#x27;, type: String})
-    @IsEmail()
-    email: string;
+  @ApiProperty({ example: &#x27;test@gmail.com&#x27;, type: String })
+  @IsEmail()
+  email: string;
 
-    @ApiProperty({ example: &#x27;password123&#x27;, type: String })
-    @IsString()
-    password: string;
+  @ApiProperty({ example: &#x27;password123&#x27;, type: String })
+  @IsString()
+  password: string;
 
-    @ApiProperty({ example: &#x27;John Doe&#x27;, type: String })
-    @IsString()
-    name: string;
-}</code></pre>
+  @ApiProperty({ example: &#x27;John Doe&#x27;, type: String })
+  @IsString()
+  name: string;
+}
+</code></pre>
     </div>
 </div>
 

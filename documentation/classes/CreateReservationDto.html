@@ -214,7 +214,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="9" class="link-to-prism">src/resources/reservation/dto/create-reservation.dto.ts:9</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="8" class="link-to-prism">src/resources/reservation/dto/create-reservation.dto.ts:8</a></div>
                         </td>
                     </tr>
 
@@ -252,7 +252,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="21" class="link-to-prism">src/resources/reservation/dto/create-reservation.dto.ts:21</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="20" class="link-to-prism">src/resources/reservation/dto/create-reservation.dto.ts:20</a></div>
                         </td>
                     </tr>
 
@@ -291,7 +291,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="27" class="link-to-prism">src/resources/reservation/dto/create-reservation.dto.ts:27</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="26" class="link-to-prism">src/resources/reservation/dto/create-reservation.dto.ts:26</a></div>
                         </td>
                     </tr>
 
@@ -329,7 +329,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="16" class="link-to-prism">src/resources/reservation/dto/create-reservation.dto.ts:16</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="15" class="link-to-prism">src/resources/reservation/dto/create-reservation.dto.ts:15</a></div>
                         </td>
                     </tr>
 
@@ -348,33 +348,32 @@
 
 
     <div class="tab-pane fade  tab-source-code" id="source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { ApiProperty } from &quot;@nestjs/swagger&quot;;
-import { Transform, Type } from &quot;class-transformer&quot;;
-import { IsNotEmpty, IsDateString, Matches, IsInt, Min, IsString, IsOptional, IsArray } from &quot;class-validator&quot;;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { ApiProperty } from &#x27;@nestjs/swagger&#x27;;
+import { IsNotEmpty, IsDateString, Matches, IsInt, Min, IsString, IsOptional, IsArray } from &#x27;class-validator&#x27;;
 
 export class CreateReservationDto {
-    @ApiProperty({ example: &#x27;2024-12-31&#x27;, type: String })
-    @IsNotEmpty()
-    @IsDateString()
-    date: string;
+  @ApiProperty({ example: &#x27;2024-12-31&#x27;, type: String })
+  @IsNotEmpty()
+  @IsDateString()
+  date: string;
 
-    @ApiProperty({ example: &#x27;12:00&#x27;, type: String })
-    @IsNotEmpty()
-    @Matches(/^([01]\d|2[0-3]):([0-5]\d)$/, {
-        message: &#x27;time must be in HH:mm format&#x27;,
-    })
-    time: string;
+  @ApiProperty({ example: &#x27;12:00&#x27;, type: String })
+  @IsNotEmpty()
+  @Matches(/^([01]\d|2[0-3]):([0-5]\d)$/, {
+    message: &#x27;time must be in HH:mm format&#x27;,
+  })
+  time: string;
 
-    @ApiProperty({ example: 2, type: Number })
-    @IsInt()
-    @Min(1)
-    numberOfGuests: number;
+  @ApiProperty({ example: 2, type: Number })
+  @IsInt()
+  @Min(1)
+  numberOfGuests: number;
 
-    @ApiProperty({ example: [&#x27;table inside&#x27;], type: Array })
-    @IsArray()
-    @IsString({ each: true })
-    @IsOptional()
-    specialRequests: string[];
+  @ApiProperty({ example: [&#x27;table inside&#x27;], type: Array })
+  @IsArray()
+  @IsString({ each: true })
+  @IsOptional()
+  specialRequests: string[];
 }
 </code></pre>
     </div>

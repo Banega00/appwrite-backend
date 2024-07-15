@@ -91,7 +91,7 @@
 
 <ol class="breadcrumb">
   <li class="breadcrumb-item">Injectables</li>
-  <li class="breadcrumb-item" >ReservationService</li>
+  <li class="breadcrumb-item" >LoggingMiddleware</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
@@ -115,7 +115,7 @@
             <h3>File</h3>
         </p>
         <p class="comment">
-            <code>src/resources/reservation/reservation.service.ts</code>
+            <code>src/shared/middleware/request-logging.middleware.ts</code>
         </p>
 
 
@@ -136,10 +136,7 @@
                     <td class="col-md-4">
                         <ul class="index-list">
                             <li>
-                                <a href="#create" >create</a>
-                            </li>
-                            <li>
-                                <a href="#getAllUserReservations" >getAllUserReservations</a>
+                                <a href="#use" >use</a>
                             </li>
                         </ul>
                     </td>
@@ -159,12 +156,12 @@
             <tbody>
                 <tr>
                     <td class="col-md-4">
-<code>constructor(reservationRepository: <a href="../injectables/ReservationRepository.html" target="_self">ReservationRepository</a>)</code>
+<code>constructor(logger: <a href="../injectables/CustomLoggingService.html" target="_self">CustomLoggingService</a>, clsService: ClsService)</code>
                     </td>
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="7" class="link-to-prism">src/resources/reservation/reservation.service.ts:7</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="7" class="link-to-prism">src/shared/middleware/request-logging.middleware.ts:7</a></div>
                             </td>
                         </tr>
 
@@ -182,10 +179,22 @@
                                         </thead>
                                         <tbody>
                                                 <tr>
-                                                        <td>reservationRepository</td>
+                                                        <td>logger</td>
                                                   
                                                         <td>
-                                                                        <code><a href="../injectables/ReservationRepository.html" target="_self" >ReservationRepository</a></code>
+                                                                        <code><a href="../injectables/CustomLoggingService.html" target="_self" >CustomLoggingService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>clsService</td>
+                                                  
+                                                        <td>
+                                                                    <code>ClsService</code>
                                                         </td>
                                                   
                                                     <td>
@@ -211,24 +220,24 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="create"></a>
+                    <a name="use"></a>
                     <span class="name">
-                        <span ><b>create</b></span>
-                        <a href="#create"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>use</b></span>
+                        <a href="#use"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
-<code>create(userId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, createReservationDto: <a href="../classes/CreateReservationDto.html" target="_self">CreateReservationDto</a>)</code>
+<code>use(req: Request, res: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>, next: () => void)</code>
                 </td>
             </tr>
 
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="14"
-                                    class="link-to-prism">src/resources/reservation/reservation.service.ts:14</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="13"
+                                    class="link-to-prism">src/shared/middleware/request-logging.middleware.ts:13</a></div>
                         </td>
                     </tr>
 
@@ -249,9 +258,9 @@
                                     </thead>
                                     <tbody>
                                         <tr>
-                                                <td>userId</td>
+                                                <td>req</td>
                                             <td>
-                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                                        <code>Request</code>
                                             </td>
 
                                             <td>
@@ -261,9 +270,9 @@
 
                                         </tr>
                                         <tr>
-                                                <td>createReservationDto</td>
+                                                <td>res</td>
                                             <td>
-                                                            <code><a href="../classes/CreateReservationDto.html" target="_self" >CreateReservationDto</a></code>
+                                                            <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
                                             </td>
 
                                             <td>
@@ -272,65 +281,10 @@
 
 
                                         </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        <div class="io-description">
-                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
-
-                        </div>
-                            <div class="io-description">
-                                
-                            </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="getAllUserReservations"></a>
-                    <span class="name">
-                        <span ><b>getAllUserReservations</b></span>
-                        <a href="#getAllUserReservations"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-<code>getAllUserReservations(userId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
-                </td>
-            </tr>
-
-
-                    <tr>
-                        <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="10"
-                                    class="link-to-prism">src/resources/reservation/reservation.service.ts:10</a></div>
-                        </td>
-                    </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
                                         <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>userId</td>
+                                                <td>next</td>
                                             <td>
-                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/function" target="_blank" >function</a></code>
                                             </td>
 
                                             <td>
@@ -343,7 +297,7 @@
                                 </table>
                             </div>
                         <div class="io-description">
-                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
 
                         </div>
                             <div class="io-description">
@@ -359,26 +313,23 @@
 
 
     <div class="tab-pane fade  tab-source-code" id="source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Injectable } from &#x27;@nestjs/common&#x27;;
-import { CreateReservationDto } from &#x27;./dto/create-reservation.dto&#x27;;
-import { ReservationRepository } from &#x27;./reservation.repository&#x27;;
-import { Reservation } from &#x27;./entities/reservation.entity&#x27;;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Injectable, NestMiddleware } from &#x27;@nestjs/common&#x27;;
+import { randomUUID } from &#x27;crypto&#x27;;
+import { ClsService } from &#x27;nestjs-cls&#x27;;
+import { CustomLoggingService } from &#x27;../logger/logger.service&#x27;;
 
 @Injectable()
-export class ReservationService {
-  constructor(private readonly reservationRepository: ReservationRepository) {}
+export class LoggingMiddleware implements NestMiddleware {
+  constructor(
+    private logger: CustomLoggingService,
+    private readonly clsService: ClsService,
+  ) {}
 
-  getAllUserReservations(userId: string) {
-    return this.reservationRepository.getAllUserReservations(userId);
-  }
+  use(req: Request, res: any, next: () &#x3D;&gt; void) {
+    this.clsService.set(&#x27;startTimestamp&#x27;, new Date().getTime());
+    this.clsService.set(&#x27;reqId&#x27;, randomUUID());
 
-  create(userId: string, createReservationDto: CreateReservationDto) {
-    const reservation &#x3D; new Reservation({
-      ...createReservationDto,
-      userId,
-    });
-
-    return this.reservationRepository.create(reservation);
+    next();
   }
 }
 </code></pre>
@@ -424,7 +375,7 @@ export class ReservationService {
        <script>
             var COMPODOC_CURRENT_PAGE_DEPTH = 1;
             var COMPODOC_CURRENT_PAGE_CONTEXT = 'injectable';
-            var COMPODOC_CURRENT_PAGE_URL = 'ReservationService.html';
+            var COMPODOC_CURRENT_PAGE_URL = 'LoggingMiddleware.html';
             var MAX_SEARCH_RESULTS = 15;
        </script>
 

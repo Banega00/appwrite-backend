@@ -259,15 +259,15 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @ApiOperation({ summary: &#x27;Get user&#x27;, description: &#x27;Get user data from its session cookie&#x27; })
-	@ApiResponse({ status: 200, description: &#x27;User email and name&#x27;})
-	@ApiResponse({ status: 401, description: &#x27;Unauthorized&#x27;})
-	@ApiResponse({ status: 500, description: &#x27;Internal server error&#x27;})
+  @ApiResponse({ status: 200, description: &#x27;User email and name&#x27; })
+  @ApiResponse({ status: 401, description: &#x27;Unauthorized&#x27; })
+  @ApiResponse({ status: 500, description: &#x27;Internal server error&#x27; })
   @ApiCookieAuth(&#x27;auth_token&#x27;)
   @SessionGuard()
   @Get()
-  getUser(@Req() request){
-    const {email, name} &#x3D; request.user;
-    return {email, name};
+  getUser(@Req() request) {
+    const { email, name } &#x3D; request.user;
+    return { email, name };
   }
 }
 </code></pre>

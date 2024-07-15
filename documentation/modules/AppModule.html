@@ -295,20 +295,40 @@
 import { AppController } from &#x27;./app.controller&#x27;;
 import { AppService } from &#x27;./app.service&#x27;;
 import { SharedModule } from &#x27;./shared/shared.module&#x27;;
-import { AppwriteModule } from &#x27;./integrations/appwrite/appwrite.module&#x27;;
 import { ConfigModule } from &#x27;@nestjs/config&#x27;;
 import { AuthModule } from &#x27;./auth/auth.module&#x27;;
 import { ClsModule } from &#x27;nestjs-cls&#x27;;
 import { UserModule } from &#x27;./resources/user/user.module&#x27;;
 import { ReservationModule } from &#x27;./resources/reservation/reservation.module&#x27;;
+import { WinstonModule } from &#x27;nest-winston&#x27;;
+import * as winston from &#x27;winston&#x27;;
+import { CustomLoggingService } from &#x27;./shared/logger/logger.service&#x27;;
 @Module({
-  imports: [SharedModule, AuthModule, ConfigModule.forRoot(), AuthModule,
+  imports: [
+    SharedModule,
+    AuthModule,
+    ConfigModule.forRoot(),
+    AuthModule,
+    WinstonModule.forRoot({
+      transports: [
+        new winston.transports.Console({
+          level: CustomLoggingService.getLoggingLevel(),
+          format: winston.format.combine(
+            winston.format.errors({ stack: true }),
+            // winston.format.label({ label: context }),
+            winston.format.timestamp({ format: &#x27;YYYY-MM-DD HH:mm:ss.SSS&#x27; }),
+            winston.format.splat(),
+            CustomLoggingService.myFormat,
+          ),
+        }),
+      ],
+    }),
     ClsModule.forRoot({
       global: true,
       middleware: { mount: true },
     }),
     UserModule,
-    ReservationModule
+    ReservationModule,
   ],
   controllers: [AppController],
   providers: [AppService],
